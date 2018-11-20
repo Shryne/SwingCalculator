@@ -23,7 +23,12 @@
 
 package ui;
 
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
 import javax.swing.WindowConstants;
 
 /**
@@ -39,6 +44,35 @@ public class CalculatorWindow implements Showable {
     public CalculatorWindow() {
         this.frame = new JFrame("Calculator");
         this.frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+
+        final JPanel panel = new JPanel(new GridBagLayout());
+        final JTextField textField = new JTextField("");
+        final GridBagConstraints c = new GridBagConstraints();
+        c.gridx = 0;
+        c.gridy = 0;
+        c.weightx = 1.0;
+        c.weighty = 0.3;
+        c.fill = GridBagConstraints.BOTH;
+        c.gridwidth = 5;
+        c.gridheight = 1;
+        panel.add(textField, c);
+
+        for (int i = 0; i < 9; i++) {
+            final JButton button = new JButton(Integer.toString(i + 1));
+            final GridBagConstraints cb = new GridBagConstraints();
+            cb.gridx = i % 3;
+            cb.gridy = i / 3 + 1;
+            cb.gridwidth = 1;
+            cb.gridheight = 1;
+            cb.weightx = 1.0;
+            cb.weighty = 0.3;
+            cb.fill = GridBagConstraints.BOTH;
+            panel.add(button, cb);
+        }
+
+
+        this.frame.add(panel);
+        this.frame.pack();
         this.frame.setLocationRelativeTo(null);
     }
 
