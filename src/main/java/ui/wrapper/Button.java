@@ -23,20 +23,28 @@
 
 package ui.wrapper;
 
-import java.awt.Container;
+import javax.swing.*;
+import java.awt.*;
 
 /**
  * A wrapper for {@link javax.swing.JButton}.
  * @since 0.3.0
  */
 public class Button implements WrappedComponent {
+    private final JButton wrapped;
 
-    public Button(String text) {
-
+    public Button(String text, int x, int y, int w, int h) {
+        this(text, new Rectangle(x, y, w, h));
     }
-    
+
+    public Button(String text, Rectangle rect) {
+        wrapped = new JButton(text);
+        wrapped.setBounds(rect);
+    }
+
     @Override
     public void addOn(final Container container) {
-        throw new UnsupportedOperationException("#addOn()");
+        // Doesn't prevent multiple additions
+        container.add(this.wrapped);
     }
 }

@@ -22,6 +22,7 @@
  */
 
 import ui.CalculatorWindow;
+import ui.wrapper.Button;
 
 /**
  * The start of the application.
@@ -31,6 +32,10 @@ public class Main {
     private Main() {} // Because instantiating this class doesn't make sense
 
     public static void main(String[] args) {
-        new CalculatorWindow().show();
+        new CalculatorWindow(
+            200, 100,
+            new Button("Hallo", 0, 0, 100, 100),
+            new Button("Hey", 100, 0, 100, 100)
+        ).show();
     }
 }
