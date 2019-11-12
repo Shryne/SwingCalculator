@@ -21,23 +21,27 @@
  * DEALINGS IN THE SOFTWARE.
  */
 
-import ui.CalculatorWindow;
-import ui.wrapper.Button;
-import ui.wrapper.TextField;
+package ui.wrapper;
+
+import javax.swing.*;
+import java.awt.*;
 
 /**
- * The start of the application.
- * @since 0.1.0
+ * A wrapper for {@link javax.swing.JTextField}.
+ * @since 0.3.0
  */
-public class Main {
-    private Main() {} // Because instantiating this class doesn't make sense
+public class TextField implements WrappedComponent {
+    private final JTextField wrapped;
 
-    public static void main(String[] args) {
-        new CalculatorWindow(
-            200, 150,
-            new TextField("X", 0, 0, 200, 50),
-            new Button("Hallo", 0, 50, 100, 100),
-            new Button("Hey", 100, 50, 100, 100)
-        ).show();
+    public TextField(String text, int x, int y, int w, int h) {
+        wrapped = new JTextField(text);
+        wrapped.setBounds(x, y, w, h);
+        wrapped.setHorizontalAlignment(JTextField.RIGHT);
+        wrapped.setEditable(false);
+    }
+
+    @Override
+    public final void addOn(Container container) {
+        container.add(wrapped);
     }
 }
