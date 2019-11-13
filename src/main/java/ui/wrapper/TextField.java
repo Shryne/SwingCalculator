@@ -23,6 +23,8 @@
 
 package ui.wrapper;
 
+import ui.mutables.MutString;
+
 import javax.swing.*;
 import java.awt.*;
 
@@ -32,9 +34,16 @@ import java.awt.*;
  */
 public class TextField implements WrappedComponent {
     private final JTextField wrapped;
+    private final MutString text;
 
     public TextField(String text, int x, int y, int w, int h) {
-        wrapped = new JTextField(text);
+        this(new MutString(text), x, y, w, h);
+    }
+
+    public TextField(MutString text, int x, int y, int w, int h) {
+        wrapped = new JTextField(text.value());
+        text.register(this);
+        this.text = text;
         wrapped.setBounds(x, y, w, h);
         wrapped.setHorizontalAlignment(JTextField.RIGHT);
         wrapped.setEditable(false);
@@ -43,5 +52,10 @@ public class TextField implements WrappedComponent {
     @Override
     public final void addOn(Container container) {
         container.add(wrapped);
+    }
+
+    @Override
+    public void update() {
+        wrapped.setText(text.value());
     }
 }

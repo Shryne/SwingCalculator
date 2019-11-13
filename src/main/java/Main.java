@@ -22,6 +22,7 @@
  */
 
 import ui.CalculatorWindow;
+import ui.mutables.MutString;
 import ui.wrapper.Button;
 import ui.wrapper.TextField;
 
@@ -33,11 +34,13 @@ public class Main {
     private Main() {} // Because instantiating this class doesn't make sense
 
     public static void main(String[] args) {
+        final var text = new MutString("First");
         new CalculatorWindow(
             200, 150,
-            new TextField("X", 0, 0, 200, 50),
+            new TextField(text, 0, 0, 200, 50),
             new Button("Hallo", 0, 50, 100, 100),
             new Button("Hey", 100, 50, 100, 100)
         ).show();
+        text.value("Second");
     }
 }

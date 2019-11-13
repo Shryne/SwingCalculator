@@ -30,7 +30,7 @@ import java.awt.Container;
  * Defines the wrapper GUI forms.
  * @since 0.3.0
  */
-public interface WrappedComponent {
+public interface WrappedComponent extends Updateable {
     /**
      * Adds this component on the given container. This way I can add my own
      * wrapped components to other swing components without using getters or

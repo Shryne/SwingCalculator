@@ -21,35 +21,33 @@
  * DEALINGS IN THE SOFTWARE.
  */
 
-package ui.wrapper;
+package ui.mutables;
 
-import javax.swing.*;
-import java.awt.*;
+import ui.wrapper.Updateable;
 
 /**
- * A wrapper for {@link javax.swing.JButton}.
- * @since 0.3.0
+ * A mutable String to enable external mutability.
  */
-public class Button implements WrappedComponent {
-    private final JButton wrapped;
+public class MutString {
+    private String value;
+    private Updateable target;
 
-    public Button(String text, int x, int y, int w, int h) {
-        this(text, new Rectangle(x, y, w, h));
+    public MutString(String value) {
+        this.value = value;
     }
 
-    public Button(String text, Rectangle rect) {
-        wrapped = new JButton(text);
-        wrapped.setBounds(rect);
+    public final void value(String value) {
+        this.value = value;
+        if (target != null) {
+            target.update();
+        }
     }
 
-    @Override
-    public void addOn(final Container container) {
-        // Doesn't prevent multiple additions
-        container.add(this.wrapped);
+    public final String value() {
+        return value;
     }
 
-    @Override
-    public void update() {
-
+    public final void register(Updateable target) {
+        this.target = target;
     }
 }
