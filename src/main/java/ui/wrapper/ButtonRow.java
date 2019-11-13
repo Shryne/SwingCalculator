@@ -21,27 +21,33 @@
  * DEALINGS IN THE SOFTWARE.
  */
 
-import ui.CalculatorWindow;
-import ui.mutables.MutString;
-import ui.wrapper.Button;
-import ui.wrapper.ButtonRow;
-import ui.wrapper.TextField;
+package ui.wrapper;
+
+
+import java.awt.*;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
- * The start of the application.
- * @since 0.1.0
+ * A group of buttons.
  */
-public class Main {
-    private Main() {} // Because instantiating this class doesn't make sense
+public class ButtonRow implements WrappedComponent {
+    private final List<Button> buttons;
 
-    public static void main(String[] args) {
-        final var text = new MutString("First");
-        final int buttonSize = 100;
-        new CalculatorWindow(
-                300, 150,
-            new TextField(text, 0, 0, 300, 50),
-            new ButtonRow(0, 50, buttonSize, buttonSize, "1", "2", "3")
-        ).show();
-        text.value("Second");
+    public ButtonRow(int x, int y, int w, int h, String... texts) {
+        buttons = new ArrayList<>(texts.length);
+        for (int i = 0; i < texts.length; i++) {
+            buttons.add(new Button(texts[i], x + i * w, y, w, h));
+        }
+    }
+
+    @Override
+    public void addOn(Container container) {
+        buttons.forEach(b -> b.addOn(container));
+    }
+
+    @Override
+    public void update() {
+        buttons.forEach(Button::update);
     }
 }

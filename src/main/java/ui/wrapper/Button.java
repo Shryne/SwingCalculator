@@ -33,6 +33,10 @@ import java.awt.*;
 public class Button implements WrappedComponent {
     private final JButton wrapped;
 
+    public Button(String text, int x, int y, int size) {
+        this(text, x, y, size, size);
+    }
+
     public Button(String text, int x, int y, int w, int h) {
         this(text, new Rectangle(x, y, w, h));
     }
