@@ -34,6 +34,10 @@ import java.util.List;
 public class ButtonRow implements WrappedComponent {
     private final List<Button> buttons;
 
+    public ButtonRow(int x, int y, int size, String... texts) {
+        this(x, y, size, size, texts);
+    }
+
     public ButtonRow(int x, int y, int w, int h, String... texts) {
         buttons = new ArrayList<>(texts.length);
         for (int i = 0; i < texts.length; i++) {
@@ -42,12 +46,12 @@ public class ButtonRow implements WrappedComponent {
     }
 
     @Override
-    public void addOn(Container container) {
+    public final void addOn(Container container) {
         buttons.forEach(b -> b.addOn(container));
     }
 
     @Override
-    public void update() {
+    public final void update() {
         buttons.forEach(Button::update);
     }
 }

@@ -40,7 +40,7 @@ public class Main {
         new CalculatorWindow(
                 300, 150,
             new TextField(text, 0, 0, 300, 50),
-            new ButtonRow(0, 50, buttonSize, buttonSize, "1", "2", "3")
+            new ButtonRow(0, 50, buttonSize, "1", "2", "3")
         ).show();
         text.value("Second");
     }
