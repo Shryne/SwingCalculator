@@ -37,11 +37,23 @@ public class Button implements WrappedComponent {
         this(text, x, y, size, size);
     }
 
+    public Button(String text, int x, int y, int size, Action action) {
+        this(text, x, y, size, size, action);
+    }
+
     public Button(String text, int x, int y, int w, int h) {
         this(text, new Rectangle(x, y, w, h));
     }
 
+    public Button(String text, int x, int y, int w, int h, Action action) {
+        this(text, new Rectangle(x, y, w, h), action);
+    }
+
     public Button(String text, Rectangle rect) {
+        this(text, rect, () -> {});
+    }
+
+    public Button(String text, Rectangle rect, Action action) {
         wrapped = new JButton(text);
         wrapped.setBounds(rect);
     }

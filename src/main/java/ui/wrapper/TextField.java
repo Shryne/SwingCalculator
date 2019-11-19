@@ -36,8 +36,16 @@ public class TextField implements WrappedComponent {
     private final JTextField wrapped;
     private final MutString text;
 
+    public TextField(String text, int w, int h) {
+        this(new MutString(text), w, h);
+    }
+
     public TextField(String text, int x, int y, int w, int h) {
         this(new MutString(text), x, y, w, h);
+    }
+
+    public TextField(MutString text, int w, int h) {
+        this(text, 0, 0, w, h);
     }
 
     public TextField(MutString text, int x, int y, int w, int h) {

@@ -21,36 +21,12 @@
  * DEALINGS IN THE SOFTWARE.
  */
 
-import ui.CalculatorWindow;
-import ui.mutables.MutString;
-import ui.wrapper.Button;
-import ui.wrapper.ButtonRow;
-import ui.wrapper.TextField;
+package ui.wrapper;
 
 /**
- * The start of the application.
- * @since 0.1.0
+ * A generic action to be applied.
  */
-public class Main {
-    private Main() {} // Because instantiating this class doesn't make sense
-
-    public static void main(String[] args) {
-        final var text = new MutString("First");
-        final int buttonSize = 100;
-        final int textHeight = 50;
-        final int rowCells = 5;
-        final int columnCells = 3;
-        new CalculatorWindow(
-                buttonSize * rowCells, textHeight + columnCells * buttonSize,
-            new TextField(text, buttonSize * rowCells, textHeight),
-            new ButtonRow(0, textHeight, buttonSize, "1", "2", "3", "C", "="),
-            new ButtonRow(
-                0, textHeight + buttonSize, buttonSize, "4", "5", "6", "+", "-"
-            ),
-            new ButtonRow(
-                0, textHeight + buttonSize * 2, buttonSize, "7", "8", "9", "*", "/"
-            )
-        ).show();
-        text.value("Second");
-    }
+@FunctionalInterface
+public interface Action {
+    void apply();
 }
