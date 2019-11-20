@@ -39,33 +39,40 @@ import java.util.stream.Collectors;
 public class ButtonRow implements WrappedComponent {
     private final List<Button> buttons;
 
-    public ButtonRow(int x, int y, int size, String... texts) {
-        this(x, y, size, size, texts);
-    }
-
     public ButtonRow(
-        int x, int y, int size, Pair<String, Action>... content
+        int x, int y, int size, Pair<String, InformedAction<String>>... content
     ) {
         this(x, y, size, size, List.of(content));
     }
 
-    public ButtonRow(int x, int y, int w, int h, String... texts) {
-        this(
-            x, y, w, h,
-            Arrays.stream(texts).map(t -> Pair.with(t, Action.NO)).collect(
-                Collectors.toUnmodifiableList()
-            )
-        );
-    }
-
+    /**
+     * Ctor.
+     * @param x The x coordinate of the row.
+     * @param y The y coordinate of the row and the buttons.
+     * @param w The width of the buttons inside of the row.
+     * @param h The height of the buttons inside of the row.
+     * @param content The texts and the actions of the buttons. The action will
+     *                get the text of the clicked button.
+     */
     public ButtonRow(
-        int x, int y, int w, int h, List<Pair<String, Action>> content
+        int x,
+        int y,
+        int w,
+        int h,
+        List<Pair<String, InformedAction<String>>> content
     ) {
         buttons = new ArrayList<>(content.size());
         int i = 0;
         for (var e : content) {
             buttons.add(
-                new Button(e.getValue0(), x + i * w, y, w, h, e.getValue1())
+                new Button(
+                    e.getValue0(),
+                    x + i * w,
+                    y,
+                    w,
+                    h,
+                    e.getValue1()
+                )
             );
             i++;
         }

@@ -38,7 +38,7 @@ public class Main {
     private Main() {} // Because instantiating this class doesn't make sense
 
     public static void main(String[] args) {
-        final var text = new MutString("First");
+        final var text = new MutString("0");
         final int buttonSize = 100;
         final int textHeight = 50;
         final int rowCells = 5;
@@ -50,19 +50,19 @@ public class Main {
                 0,
                 textHeight,
                 buttonSize,
-                Pair.with("1", () -> System.out.println("1")),
-                Pair.with("2", () -> System.out.println("2")),
-                Pair.with("3", () -> System.out.println("3")),
-                Pair.with("=", () -> System.out.println("=")),
-                Pair.with("C", () -> System.out.println("C"))
-            ),
+                Pair.with("1", t -> text.value(text.value() + t)),
+                Pair.with("2", t -> text.value(text.value() + t)),
+                Pair.with("3", t -> text.value(text.value() + t)),
+                Pair.with("=", t -> System.out.println("=")),
+                Pair.with("C", t -> text.value("0"))
+            )
+            /*
             new ButtonRow(
                 0, textHeight + buttonSize, buttonSize, "4", "5", "6", "+", "-"
             ),
             new ButtonRow(
                 0, textHeight + buttonSize * 2, buttonSize, "7", "8", "9", "*", "/"
-            )
+            )*/
         ).show();
-        text.value("Second");
     }
 }

@@ -41,6 +41,21 @@ public class Button implements WrappedComponent {
         this(text, x, y, size, size, action);
     }
 
+    /**
+     * Ctor.
+     * @param text The text of the button.
+     * @param x The x coordinate of the button.
+     * @param y The y coordinate of the button.
+     * @param size The size of the button (width and height).
+     * @param action The action to be applied when the buttons is clicked. The
+     *               action gets the text of the button.
+     */
+    public Button(
+        String text, int x, int y, int size, InformedAction<String> action
+    ) {
+        this(text, x, y, size, size, action);
+    }
+
     public Button(String text, int x, int y, int w, int h) {
         this(text, new Rectangle(x, y, w, h));
     }
@@ -49,13 +64,40 @@ public class Button implements WrappedComponent {
         this(text, new Rectangle(x, y, w, h), action);
     }
 
+    /**
+     * Ctor.
+     * @param text The text of the button.
+     * @param x The x coordinate of the button.
+     * @param y The y coordinate of the button.
+     * @param w The width of the button.
+     * @param h The height of the button.
+     * @param action The action to be applied when the buttons is clicked. The
+     *               action gets the text of the button.
+     */
+    public Button(
+        String text, int x, int y, int w, int h, InformedAction<String> action
+    ) {
+        this(text, new Rectangle(x, y, w, h), action);
+    }
+
     public Button(String text, Rectangle rect) {
         this(text, rect, () -> {});
     }
 
     public Button(String text, Rectangle rect, Action action) {
+        this(text, rect, t -> action.apply());
+    }
+
+    /**
+     * Ctor.
+     * @param text The text of the button.
+     * @param rect The area of the button.
+     * @param action The action to be applied when the buttons is clicked. The
+     *               action gets the text of the button.
+     */
+    public Button(String text, Rectangle rect, InformedAction<String> action) {
         wrapped = new JButton(text);
-        wrapped.addActionListener(e -> action.apply());
+        wrapped.addActionListener(e -> action.apply(text));
         wrapped.setBounds(rect);
     }
 
