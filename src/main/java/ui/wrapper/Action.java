@@ -28,5 +28,7 @@ package ui.wrapper;
  */
 @FunctionalInterface
 public interface Action {
+    static final Action NO = () -> {};
+
     void apply();
 }

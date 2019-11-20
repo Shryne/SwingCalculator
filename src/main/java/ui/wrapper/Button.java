@@ -55,6 +55,7 @@ public class Button implements WrappedComponent {
 
     public Button(String text, Rectangle rect, Action action) {
         wrapped = new JButton(text);
+        wrapped.addActionListener(e -> action.apply());
         wrapped.setBounds(rect);
     }
 

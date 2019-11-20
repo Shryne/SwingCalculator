@@ -21,11 +21,14 @@
  * DEALINGS IN THE SOFTWARE.
  */
 
+import org.javatuples.Pair;
 import ui.CalculatorWindow;
 import ui.mutables.MutString;
 import ui.wrapper.Button;
 import ui.wrapper.ButtonRow;
 import ui.wrapper.TextField;
+
+import java.util.Map;
 
 /**
  * The start of the application.
@@ -43,7 +46,16 @@ public class Main {
         new CalculatorWindow(
                 buttonSize * rowCells, textHeight + columnCells * buttonSize,
             new TextField(text, buttonSize * rowCells, textHeight),
-            new ButtonRow(0, textHeight, buttonSize, "1", "2", "3", "C", "="),
+            new ButtonRow(
+                0,
+                textHeight,
+                buttonSize,
+                Pair.with("1", () -> System.out.println("1")),
+                Pair.with("2", () -> System.out.println("2")),
+                Pair.with("3", () -> System.out.println("3")),
+                Pair.with("=", () -> System.out.println("=")),
+                Pair.with("C", () -> System.out.println("C"))
+            ),
             new ButtonRow(
                 0, textHeight + buttonSize, buttonSize, "4", "5", "6", "+", "-"
             ),

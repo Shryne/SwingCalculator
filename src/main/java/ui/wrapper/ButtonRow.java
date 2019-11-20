@@ -24,9 +24,14 @@
 package ui.wrapper;
 
 
+import org.javatuples.Pair;
+import org.javatuples.Tuple;
+
 import java.awt.*;
-import java.util.ArrayList;
+import java.util.*;
 import java.util.List;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
 
 /**
  * A group of buttons.
@@ -38,10 +43,31 @@ public class ButtonRow implements WrappedComponent {
         this(x, y, size, size, texts);
     }
 
+    public ButtonRow(
+        int x, int y, int size, Pair<String, Action>... content
+    ) {
+        this(x, y, size, size, List.of(content));
+    }
+
     public ButtonRow(int x, int y, int w, int h, String... texts) {
-        buttons = new ArrayList<>(texts.length);
-        for (int i = 0; i < texts.length; i++) {
-            buttons.add(new Button(texts[i], x + i * w, y, w, h));
+        this(
+            x, y, w, h,
+            Arrays.stream(texts).map(t -> Pair.with(t, Action.NO)).collect(
+                Collectors.toUnmodifiableList()
+            )
+        );
+    }
+
+    public ButtonRow(
+        int x, int y, int w, int h, List<Pair<String, Action>> content
+    ) {
+        buttons = new ArrayList<>(content.size());
+        int i = 0;
+        for (var e : content) {
+            buttons.add(
+                new Button(e.getValue0(), x + i * w, y, w, h, e.getValue1())
+            );
+            i++;
         }
     }
 
