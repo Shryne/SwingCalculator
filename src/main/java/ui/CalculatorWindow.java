@@ -55,9 +55,10 @@ public class CalculatorWindow implements Showable {
         for (WrappedComponent c : components) {
             c.addOn(frame);
         }
-        frame.setLocationRelativeTo(null);
         frame.getContentPane().setPreferredSize(dimension);
         frame.pack();
+        frame.setLocationRelativeTo(null);
+        frame.setResizable(false);
     }
 
     @Override

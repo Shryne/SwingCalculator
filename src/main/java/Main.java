@@ -44,7 +44,7 @@ public class Main {
         final int rowCells = 5;
         final int columnCells = 3;
         new CalculatorWindow(
-                buttonSize * rowCells, textHeight + columnCells * buttonSize,
+            buttonSize * rowCells, textHeight + columnCells * buttonSize,
             new TextField(text, buttonSize * rowCells, textHeight),
             new ButtonRow(
                 0,
@@ -55,14 +55,27 @@ public class Main {
                 Pair.with("3", t -> text.value(text.value() + t)),
                 Pair.with("=", t -> System.out.println("=")),
                 Pair.with("C", t -> text.value("0"))
-            )
-            /*
-            new ButtonRow(
-                0, textHeight + buttonSize, buttonSize, "4", "5", "6", "+", "-"
             ),
             new ButtonRow(
-                0, textHeight + buttonSize * 2, buttonSize, "7", "8", "9", "*", "/"
-            )*/
+                0,
+                textHeight + buttonSize,
+                buttonSize,
+                Pair.with("4", t -> text.value(text.value() + t)),
+                Pair.with("5", t -> text.value(text.value() + t)),
+                Pair.with("6", t -> text.value(text.value() + t)),
+                Pair.with("+", t -> System.out.println("=")),
+                Pair.with("-", t -> text.value("0"))
+            ),
+            new ButtonRow(
+                0,
+                textHeight + buttonSize * 2,
+                buttonSize,
+                Pair.with("7", t -> text.value(text.value() + t)),
+                Pair.with("8", t -> text.value(text.value() + t)),
+                Pair.with("9", t -> text.value(text.value() + t)),
+                Pair.with("*", t -> System.out.println("=")),
+                Pair.with("/", t -> text.value("0"))
+            )
         ).show();
     }
 }
