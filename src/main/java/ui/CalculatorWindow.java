@@ -23,6 +23,10 @@
 
 package ui;
 
+import org.javatuples.Pair;
+import ui.mutables.MutString;
+import ui.wrapper.ButtonRow;
+import ui.wrapper.TextField;
 import ui.wrapper.WrappedComponent;
 
 import java.awt.*;
@@ -37,25 +41,86 @@ import javax.swing.WindowConstants;
  * @since 0.1.0
  */
 public class CalculatorWindow implements Showable {
-    private final JFrame frame;
+    /**
+     * The number of cells inside of a row that contains buttons.
+     * Example: First row: 1, 2, 3, =, C -> 5 cells.
+     * All button rows need to have the same number of cells.
+     */
+    private static final int ROW_CELLS = 5;
 
-    public CalculatorWindow(int w, int h, WrappedComponent... components) {
-        this(new Dimension(w, h), components);
-    }
+    /**
+     * The number of cells in a column. Only the button rows are counted.
+     * Example: First column: 1, 4, 7 -> 3 cells.
+     * All columns need to have the same number of cells.
+     */
+    private static final int COLUMN_CELLS = 3;
+
+    private final JFrame frame;
 
     /**
      * Ctor.
+     * @param textFieldH The height of the TextField containing representing
+     *                   the calculation.
+     * @param buttonSize The size of the buttons.
      */
-    public CalculatorWindow(
-        Dimension dimension, WrappedComponent... components
-    ) {
+    public CalculatorWindow(int textFieldH, int buttonSize) {
+        this(new MutString("0"), textFieldH, buttonSize);
+    }
+
+    /**
+     * Ctor. This constructor is necessary because the MutString is needed in
+     * multiple objects. Because it's impossible to create a variable inside of
+     * a constructor before the this call, a second constructor does the job.
+     * @param text The text of the TextField.
+     * @param textFieldH The height of the TextField containing representing
+     *                   the calculation.
+     * @param buttonSize The size of the buttons.
+     */
+    private CalculatorWindow(MutString text, int textFieldH, int buttonSize) {
+        this(
+            buttonSize * ROW_CELLS, textFieldH + COLUMN_CELLS * buttonSize,
+            new TextField(text, buttonSize * ROW_CELLS, textFieldH),
+            new ButtonRow(
+                0,
+                textFieldH,
+                buttonSize,
+                Pair.with("1", t -> text.value(text.value() + t)),
+                Pair.with("2", t -> text.value(text.value() + t)),
+                Pair.with("3", t -> text.value(text.value() + t)),
+                Pair.with("=", t -> System.out.println("=")),
+                Pair.with("C", t -> text.value("0"))
+            ),
+            new ButtonRow(
+                0,
+                textFieldH + buttonSize,
+                buttonSize,
+                Pair.with("4", t -> text.value(text.value() + t)),
+                Pair.with("5", t -> text.value(text.value() + t)),
+                Pair.with("6", t -> text.value(text.value() + t)),
+                Pair.with("+", t -> System.out.println("=")),
+                Pair.with("-", t -> text.value("0"))
+            ),
+            new ButtonRow(
+                0,
+                textFieldH + buttonSize * 2,
+                buttonSize,
+                Pair.with("7", t -> text.value(text.value() + t)),
+                Pair.with("8", t -> text.value(text.value() + t)),
+                Pair.with("9", t -> text.value(text.value() + t)),
+                Pair.with("*", t -> System.out.println("=")),
+                Pair.with("/", t -> text.value("0"))
+            )
+        );
+    }
+
+    private CalculatorWindow(int w, int h, WrappedComponent... components) {
         frame = new JFrame("Calculator");
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         frame.setLayout(null);
         for (WrappedComponent c : components) {
             c.addOn(frame);
         }
-        frame.getContentPane().setPreferredSize(dimension);
+        frame.getContentPane().setPreferredSize(new Dimension(w, h));
         frame.pack();
         frame.setLocationRelativeTo(null);
         frame.setResizable(false);
