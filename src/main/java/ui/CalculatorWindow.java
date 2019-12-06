@@ -23,6 +23,7 @@
 
 package ui;
 
+import logic.Calculator;
 import org.javatuples.Pair;
 import ui.mutables.MutString;
 import ui.wrapper.ButtonRow;
@@ -64,19 +65,22 @@ public class CalculatorWindow implements Showable {
      * @param buttonSize The size of the buttons.
      */
     public CalculatorWindow(int textFieldH, int buttonSize) {
-        this(new MutString("0"), textFieldH, buttonSize);
+        this(new Calculator(), new MutString("0"), textFieldH, buttonSize);
     }
 
     /**
      * Ctor. This constructor is necessary because the MutString is needed in
      * multiple objects. Because it's impossible to create a variable inside of
      * a constructor before the this call, a second constructor does the job.
+     * @param calc The calculator doing the calculations.
      * @param text The text of the TextField.
      * @param textFieldH The height of the TextField containing representing
      *                   the calculation.
      * @param buttonSize The size of the buttons.
      */
-    private CalculatorWindow(MutString text, int textFieldH, int buttonSize) {
+    private CalculatorWindow(
+        Calculator calc, MutString text, int textFieldH, int buttonSize
+    ) {
         this(
             buttonSize * ROW_CELLS, textFieldH + COLUMN_CELLS * buttonSize,
             new TextField(text, buttonSize * ROW_CELLS, textFieldH),
@@ -84,7 +88,19 @@ public class CalculatorWindow implements Showable {
                 0,
                 textFieldH,
                 buttonSize,
-                Pair.with("1", t -> text.value(text.value() + t)),
+                Pair.with("1", t -> {
+                    if (text.value().equals("0")) {
+                        text.value(t);
+                        // matches(^[+-/*]) would be more elegant
+                        // but for some reason the ^ doesn't work
+                    } else {
+                        if (hasSign(text.value())) {
+                            applyCalculation(text, calc);
+                        } else {
+                            text.value(text.value() + t);
+                        }
+                    }
+                }),
                 Pair.with("2", t -> text.value(text.value() + t)),
                 Pair.with("3", t -> text.value(text.value() + t)),
                 Pair.with("=", t -> System.out.println("=")),
@@ -97,8 +113,8 @@ public class CalculatorWindow implements Showable {
                 Pair.with("4", t -> text.value(text.value() + t)),
                 Pair.with("5", t -> text.value(text.value() + t)),
                 Pair.with("6", t -> text.value(text.value() + t)),
-                Pair.with("+", t -> System.out.println("=")),
-                Pair.with("-", t -> text.value("0"))
+                Pair.with("+", t -> text.value(t + text.value())),
+                Pair.with("-", t -> text.value(t + text.value()))
             ),
             new ButtonRow(
                 0,
@@ -107,8 +123,8 @@ public class CalculatorWindow implements Showable {
                 Pair.with("7", t -> text.value(text.value() + t)),
                 Pair.with("8", t -> text.value(text.value() + t)),
                 Pair.with("9", t -> text.value(text.value() + t)),
-                Pair.with("*", t -> System.out.println("=")),
-                Pair.with("/", t -> text.value("0"))
+                Pair.with("*", t -> text.value(t + text.value())),
+                Pair.with("/", t -> text.value(t + text.value()))
             )
         );
     }
@@ -129,5 +145,43 @@ public class CalculatorWindow implements Showable {
     @Override
     public final void show() {
         this.frame.setVisible(true);
+    }
+
+    /**
+     * TODO: The supported signs should be noted at only one place.
+     * Checks whether the given sequence has a sign as the first character.
+     * @param sequence The sequence to be checked.
+     * @return True if the first character is a supported sign or otherwise
+     *  false.
+     */
+    private static boolean hasSign(CharSequence sequence) {
+        return sequence.charAt(0) == '+' || sequence.charAt(0) == '-'
+            || sequence.charAt(0) == '*' || sequence.charAt(0) == '/';
+    }
+
+    /**
+     * Applies the calculation based on the sing in the text argument.
+     * @param text The text that must have a sign as a first character. Only
+     *             +, -, * and / are supported.
+     * @param calc The calculator where the sign is applied on.
+     * @throws IllegalArgumentException When text doesn't have a supported sign
+     *  as the first character.
+     */
+    private static void applyCalculation(MutString text, Calculator calc) {
+        if (text.value().charAt(0) == '+') {
+            calc.add(Integer.parseInt(text.value().substring(1)));
+        } else if (text.value().charAt(0) == '-') {
+            calc.minus(Integer.parseInt(text.value().substring(1)));
+        } else if (text.value().charAt(0) == '*') {
+            calc.mul(Integer.parseInt(text.value().substring(1)));
+        } else if (text.value().charAt(0) == '/') {
+            calc.div(Integer.parseInt(text.value().substring(1)));
+        } else {
+            throw new IllegalArgumentException(
+                "The given text must have a sign at the beginning at this " +
+                    "point but is: " + text.value()
+            );
+        }
+        text.value(Integer.toString(1));
     }
 }
